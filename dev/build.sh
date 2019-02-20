@@ -1,12 +1,21 @@
-#! /bin/bash
+#!/bin/bash
 
 INSTALL_DIR="/opt/ttn-gateway"
 
 mkdir -p $INSTALL_DIR/dev
 cd $INSTALL_DIR/dev
 
+if [ ! -d libmpsse ]; then
+    git clone https://github.com/devttys0/libmpsse.git  || { echo 'Cloning libmpsse failed.' ; exit 1; }
+else
+    cd libmpsse
+    git reset --hard
+    git pull
+    cd ..
+fi
+
 if [ ! -d lora_gateway ]; then
-    git clone https://github.com/kersing/lora_gateway.git  || { echo 'Cloning lora_gateway failed.' ; exit 1; }
+    git clone https://github.com/chrisys/lora_gateway.git  || { echo 'Cloning lora_gateway failed.' ; exit 1; }
 else
     cd lora_gateway
     git reset --hard
@@ -59,9 +68,14 @@ else
     cd ..
 fi
 
+cd $INSTALL_DIR/dev/libmpsse/src/
+./configure
+make
+make install
+
 cd $INSTALL_DIR/dev/lora_gateway/libloragw
-sed -i -e 's/PLATFORM= .*$/PLATFORM= imst_rpi/g' library.cfg
-sed -i -e 's/CFG_SPI= .*$/CFG_SPI= native/g' library.cfg
+sed -i -e 's/PLATFORM= .*$/PLATFORM= rak831_usb/g' library.cfg
+sed -i -e 's/DEVICE_INDEX .*$/DEVICE_INDEX 1/g' inc/rak831_usb.h
 make -j$(nproc)
 
 cd $INSTALL_DIR/dev/protobuf-c
