@@ -75,7 +75,8 @@ make install
 
 cd $INSTALL_DIR/dev/lora_gateway/libloragw
 sed -i -e 's/PLATFORM= .*$/PLATFORM= rak831_usb/g' library.cfg
-sed -i -e 's/DEVICE_INDEX .*$/DEVICE_INDEX 1/g' inc/rak831_usb.h
+# Uncomment vv for balenaFin v1.0
+# sed -i -e 's/DEVICE_INDEX .*$/DEVICE_INDEX 1/g' inc/rak831_usb.h
 make -j$(nproc)
 
 cd $INSTALL_DIR/dev/protobuf-c

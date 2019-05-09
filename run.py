@@ -7,7 +7,7 @@ Based on: https://github.com/rayozzie/ttn-resin-gateway-rpi/blob/master/run.sh
 import os
 import os.path
 import sys
-import urllib2
+import urllib.request as urllib2
 import time
 import uuid
 import json
