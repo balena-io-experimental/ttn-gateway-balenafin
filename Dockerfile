@@ -1,4 +1,4 @@
-FROM balenalib/raspberrypi3:build AS build
+FROM balenalib/fincm3:build AS build
 
 RUN install_packages swig \
   libftdi-dev \
@@ -20,7 +20,7 @@ RUN chmod +x ./dev/build.sh
 RUN ./dev/build.sh
 
 
-FROM balenalib/raspberrypi3-python
+FROM balenalib/fincm3-python
 
 RUN install_packages libftdi1
 
