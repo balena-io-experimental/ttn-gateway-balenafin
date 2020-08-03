@@ -7,7 +7,7 @@ Based on: https://github.com/rayozzie/ttn-resin-gateway-rpi/blob/master/run.sh
 import os
 import os.path
 import sys
-import urllib2
+import urllib.request
 import time
 import uuid
 import json
@@ -92,11 +92,11 @@ if(os.getenv('SERVER_TTN', "true")=="true"):
   # Fetch the URL, if it fails try 30 seconds later again.
   config_response = ""
   try:
-    req = urllib2.Request('https://%s/api/v2/gateways/%s' % (account_server_domain, my_gw_id))
+    req = urllib.request.Request('https://%s/api/v2/gateways/%s' % (account_server_domain, my_gw_id))
     req.add_header('Authorization', 'Key '+os.environ.get("GW_KEY"))
-    response = urllib2.urlopen(req, timeout=30)
+    response = urllib.request.urlopen(req, timeout=30)
     config_response = response.read()
-  except urllib2.URLError as err:
+  except urllib.request.URLError as err:
     print ("Unable to fetch configuration from TTN. Are your GW_ID and GW_KEY correct?")
     sys.exit(0)
 
@@ -162,12 +162,12 @@ print ("Hardware GPS port:\t"+os.getenv('GW_GPS_PORT', "/dev/ttyAMA0"))
 # Retrieve global_conf
 sx1301_conf = {}
 try:
-  response = urllib2.urlopen(frequency_plan_url, timeout=30)
+  response = urllib.request.urlopen(frequency_plan_url, timeout=30)
   global_conf = response.read()
   global_conf_object = json.loads(global_conf)
   if('SX1301_conf' in global_conf_object):
     sx1301_conf = global_conf_object['SX1301_conf']
-except urllib2.URLError as err:
+except urllib.request.URLError as err:
   print ("Unable to fetch global conf from Github")
   sys.exit(0)
 
